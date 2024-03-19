@@ -1,5 +1,7 @@
 extends Node2D
 
+const SawScene = preload("res://saw_blade.tscn")
+
 @onready var arrow_sprite_2d: Sprite2D = $ArrowSprite2D
 @onready var timer: Timer = $Timer
 
@@ -8,9 +10,11 @@ var direction = Vector2.RIGHT.rotated(randf_range(0, TAU))
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	arrow_sprite_2d.rotation = direction.angle()
-	pass # Replace with function body.
+	timer.timeout.connect(_on_timer_timeout)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func _on_timer_timeout():
+	var saw = SawScene.instantiate()
+	saw.position = position
+	saw.linear_velocity = direction * 50
+	get_tree().current_scene.add_child(saw)
+	queue_free()
