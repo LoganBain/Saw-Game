@@ -12,4 +12,5 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _on_hurtbox_body_entered(body):
+	Events.balloon_popped.emit()
 	queue_free()
